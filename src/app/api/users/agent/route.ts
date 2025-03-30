@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from '@/dbConfig/dbConfig';
 import Agent from "@/models/agentModel";
+import Item from "@/models/itemModel";
+import mongoose from "mongoose";
 
 connect();
 
@@ -35,16 +37,21 @@ export async function POST(req: NextRequest) {
   
   
 
-export async function GET() {
-  try {
-    const agents = await Agent.find().populate("assignedItems");
-    console.log("ASFDAS",agents)
-    return NextResponse.json({ agents }, { status: 200 });
-  } catch (error) {
-    console.error("GET /agent error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  export async function GET() {
+    try {
+      console.log("Registered Models:", mongoose.modelNames());
+  
+      const populatedAgents = await Agent.find().populate("assignedItems").lean(); 
+  
+      console.log("Populated agents:", populatedAgents);
+  
+      return NextResponse.json({ agents: populatedAgents }, { status: 200 });
+    } catch (error) {
+      console.error("GET /agent error:", error);
+      return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
   }
-}
+  
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     try {
