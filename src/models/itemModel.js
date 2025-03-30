@@ -7,6 +7,7 @@ const itemSchema = new mongoose.Schema({
   assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "Agent" }, 
 });
 
-const Item = mongoose.models.Item || mongoose.model("Item", itemSchema);
+const Item = mongoose.models.Item || mongoose.model
+("Item", itemSchema);
 
 export default Item;

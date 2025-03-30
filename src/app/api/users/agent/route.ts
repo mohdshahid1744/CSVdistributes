@@ -39,18 +39,20 @@ export async function POST(req: NextRequest) {
 
   export async function GET() {
     try {
-      console.log("Registered Models:", mongoose.modelNames());
+      console.log("Registered Models:", mongoose.modelNames()); // ✅ Debugging
   
-      const populatedAgents = await Agent.find().populate("assignedItems").lean(); 
+      const populatedAgents = await Agent.find().populate("assignedItems").lean();
+      const items=await Item.find()
   
       console.log("Populated agents:", populatedAgents);
   
-      return NextResponse.json({ agents: populatedAgents }, { status: 200 });
+      return NextResponse.json({ agents: populatedAgents,items }, { status: 200 });
     } catch (error) {
       console.error("GET /agent error:", error);
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
   }
+  
   
 
 export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
@@ -72,3 +74,5 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
   }
+
+  
